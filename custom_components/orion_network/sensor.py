@@ -52,7 +52,7 @@ class OrionNetworkLoadManagementSensor(Entity):
     def __init__(self, name, api):
         self._name = name
         self._icon = "mdi:transmission-tower"
-        self._state = ""
+        self._state = None
         self._state_attributes = {}
         self._unit_of_measurement = None
         self._device_class = "running"
@@ -88,17 +88,19 @@ class OrionNetworkLoadManagementSensor(Entity):
     def unique_id(self):
         """Return the unique id."""
         return self._unique_id
-    
+
     def update(self):
         _LOGGER.debug('Fetching network load')
+
         response = self._api.get_load()
         if response:
             _LOGGER.debug(response)
-            if response['shedding'] > 0:
+
+            if self._state != "On" and response['shedding'] > 0:
                 self._state = "On"
-            else:
+            elif self._state != "Off":
                 self._state = "Off"
-                
+
             self._state_attributes['Network Load'] = str(response['networkLoad']) + " MW"
             self._state_attributes['Network Limit'] = str(response['networkLimit']) + " MW"
             self._state_attributes['Shedding'] = str(response['shedding']) + "%"
