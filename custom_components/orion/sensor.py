@@ -2,14 +2,13 @@
 from datetime import datetime, timedelta
 
 import logging
-import voluptuous as vol
 
-import homeassistant.helpers.config_validation as cv
-from homeassistant.components.sensor import PLATFORM_SCHEMA
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity import Entity
-
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
 from .api import OrionNetworkApi
 
@@ -19,7 +18,7 @@ from .const import (
 )
 
 NAME = DOMAIN
-ISSUEURL = "https://github.com/codyc1515/hacs_orion_network/issues"
+ISSUEURL = "https://github.com/codyc1515/ha-orion/issues"
 
 STARTUP = f"""
 -------------------------------------------------------------------
@@ -32,25 +31,23 @@ If you have any issues with this you need to open an issue here:
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-
-})
-
 SCAN_INTERVAL = timedelta(seconds=60)
 
-async def async_setup_platform(hass, config, async_add_entities,
-                               discovery_info=None):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Initialize the entries."""
+
     api = OrionNetworkApi()
 
-    _LOGGER.debug('Setting up sensor(s)...')
+    async_add_entities([OrionNetworkLoadManagementSensor(api)], True)
 
-    sensors = []
-    sensors .append(OrionNetworkLoadManagementSensor(SENSOR_NAME, api))
-    async_add_entities(sensors, True)
 
-class OrionNetworkLoadManagementSensor(Entity):
-    def __init__(self, name, api):
-        self._name = name
+class OrionNetworkLoadManagementSensor(SensorEntity):
+    def __init__(self, api):
+        self._name = SENSOR_NAME
         self._icon = "mdi:transmission-tower"
         self._state = None
         self._state_attributes = {}
@@ -89,7 +86,7 @@ class OrionNetworkLoadManagementSensor(Entity):
         """Return the unique id."""
         return self._unique_id
 
-    def update(self):
+    async def async_update(self) -> None:
         _LOGGER.debug('Fetching network load')
 
         response = self._api.get_load()
