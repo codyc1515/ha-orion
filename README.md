@@ -1,11 +1,6 @@
 # Orion Network Load Management integration for Home Assistant
 ## Getting started
-In your configuration.yaml file, add the following:
-
-```
-sensor:
-  - platform: orion
-```
+Add the Orion Network Load Management integration from the `Devices and services` area.
 
 ## Installation
 ### HACS (recommended)
