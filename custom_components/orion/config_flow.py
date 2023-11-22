@@ -20,7 +20,7 @@ class OrionNetworkConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Handle a flow initialized by the user."""
         if self._async_current_entries():
-            return self.async_abort(reason="single_instance_allowed")
+            return self.async_abort(reason="already_configured")
         return self.async_create_entry(title=SENSOR_NAME, data={})
 
     async def async_step_import(self, user_input: dict[str, Any]) -> FlowResult:

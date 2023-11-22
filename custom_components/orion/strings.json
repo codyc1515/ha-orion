@@ -1,5 +1,5 @@
 {
-	"title": "Orion Network",
+	"title": "Orion Load Control",
 	"config": {
 		"step": {
 			"confirm": {
@@ -7,7 +7,7 @@
 			}
 		},
 		"abort": {
-			"single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]"
+			"already_configured": "[%key:common::config_flow::abort::single_instance_allowed%]"
 		}
 	}
 }

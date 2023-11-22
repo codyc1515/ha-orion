@@ -1,6 +1,6 @@
 {
 	"domain": "orion",
-	"name": "Orion Load Management",
+	"name": "Orion Load Control",
 	"codeowners": [
 		"@codyc1515"
 	],
