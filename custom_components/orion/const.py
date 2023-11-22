@@ -1,5 +1,7 @@
 """Constants for the Orion Network sensors"""
+from homeassistant.const import Platform
 
-SENSOR_NAME = 'Orion Load Control'
+DOMAIN = "orion"
+SENSOR_NAME = "Orion Load Control"
 
-DOMAIN = 'orion'
+PLATFORMS = [Platform.SENSOR]

@@ -12,10 +12,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .api import OrionNetworkApi
 
-from .const import (
-    DOMAIN,
-    SENSOR_NAME
-)
+from .const import DOMAIN, SENSOR_NAME
 
 NAME = DOMAIN
 ISSUEURL = "https://github.com/codyc1515/ha-orion/issues"
@@ -32,6 +29,7 @@ If you have any issues with this you need to open an issue here:
 _LOGGER = logging.getLogger(__name__)
 
 SCAN_INTERVAL = timedelta(seconds=60)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -87,19 +85,23 @@ class OrionNetworkLoadManagementSensor(SensorEntity):
         return self._unique_id
 
     async def async_update(self) -> None:
-        _LOGGER.debug('Fetching network load')
+        _LOGGER.debug("Fetching network load")
 
-        response = self._api.get_load()
+        response = await self._api.get_load()
         if response:
             _LOGGER.debug(response)
 
-            if self._state != "On" and response['shedding'] > 0:
+            if self._state != "On" and response["shedding"] > 0:
                 self._state = "On"
             elif self._state != "Off":
                 self._state = "Off"
 
-            self._state_attributes['Network Load'] = str(response['networkLoad']) + " MW"
-            self._state_attributes['Network Limit'] = str(response['networkLimit']) + " MW"
-            self._state_attributes['Shedding'] = str(response['shedding']) + "%"
+            self._state_attributes["Network Load"] = (
+                str(response["networkLoad"]) + " MW"
+            )
+            self._state_attributes["Network Limit"] = (
+                str(response["networkLimit"]) + " MW"
+            )
+            self._state_attributes["Shedding"] = str(response["shedding"]) + "%"
         else:
-            _LOGGER.error('Unable to fetch network load')
+            _LOGGER.error("Unable to fetch network load")
