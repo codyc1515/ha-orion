@@ -1,4 +1,4 @@
-# Orion Network Load Management integration for Home Assistant
+# Orion Load Control integration for Home Assistant
 ## Getting started
 Add the Orion Network Load Management integration from the `Devices and services` area.
 
@@ -6,7 +6,7 @@ Add the Orion Network Load Management integration from the `Devices and services
 ### HACS (recommended)
 1. [Install HACS](https://hacs.xyz/docs/setup/download), if you did not already
 2. [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=codyc1515&repository=ha-orion&category=integration)
-3. Install the Orion Network Load Management integration
+3. Install the Orion Load Control integration
 4. Restart Home Assistant
 
 ### Manually
