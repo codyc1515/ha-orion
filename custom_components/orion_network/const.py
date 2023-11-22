@@ -2,4 +2,4 @@
 
 SENSOR_NAME = 'Orion Load Control'
 
-DOMAIN = 'orion_network'
+DOMAIN = 'orion'
